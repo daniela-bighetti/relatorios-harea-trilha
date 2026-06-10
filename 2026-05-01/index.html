@@ -44,7 +44,35 @@
     @keyframes rise { to { opacity: 1; transform: none; } }
     .card { transition: box-shadow .25s ease, transform .25s ease; }
     .card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -24px rgba(19,50,79,.45); }
+
+    /* --- sumário navegável (sticky + scroll-spy) --- */
+    #topnav { background: transparent; transition: background .3s ease, box-shadow .3s ease; }
+    #topnav.scrolled {
+      background: rgba(255,255,255,.9);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      box-shadow: 0 1px 0 rgba(15,23,42,.06), 0 10px 30px -22px rgba(15,23,42,.5);
+    }
+    #topnav .nav-brand { color: rgba(255,255,255,.92); transition: color .3s ease; }
+    #topnav.scrolled .nav-brand { color: #13324F; }
+    .navlink {
+      position: relative; padding: 4px 1px; white-space: nowrap;
+      color: rgba(255,255,255,.72); transition: color .2s ease;
+    }
+    .navlink:hover { color: #fff; }
+    #topnav.scrolled .navlink { color: #64748B; }
+    #topnav.scrolled .navlink:hover { color: #13324F; }
+    .navlink::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+      background: currentColor; border-radius: 2px;
+      transform: scaleX(0); transform-origin: left; transition: transform .22s ease;
+    }
+    .navlink.active::after { transform: scaleX(1); }
+    .navlink.active { color: #fff; }
+    #topnav.scrolled .navlink.active { color: #1F4E79; }
+    #navMenu { box-shadow: 0 12px 30px -18px rgba(15,23,42,.5); }
     @media print {
+      #topnav { display: none !important; }
       .no-print { display: none !important; }
       .reveal { animation: none; opacity: 1; transform: none; }
       body { background: #fff; }
@@ -53,7 +81,32 @@
 </head>
 <body class="font-sans antialiased">
 
-<header class="relative overflow-hidden text-white"
+<nav id="topnav" class="fixed top-0 inset-x-0 z-50 no-print">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="flex items-center justify-between h-14">
+      <a href="#sec-visao" class="nav-brand font-display text-sm font-semibold tracking-tight">Harea Imob - Lançamentos</a>
+      <ul class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <li><a href="#sec-visao" data-sec="sec-visao" class="navlink">Visão Geral</a></li>
+        <li><a href="#sec-ritmo" data-sec="sec-ritmo" class="navlink">Volume & Ritmo</a></li>
+        <li><a href="#sec-funil" data-sec="sec-funil" class="navlink">Funil</a></li>
+        <li><a href="#sec-inteligencia" data-sec="sec-inteligencia" class="navlink">Inteligência</a></li>
+        <li><a href="#sec-proxima" data-sec="sec-proxima" class="navlink">Próxima Quinzena</a></li>
+      </ul>
+      <button id="navToggle" class="md:hidden text-white p-2 -mr-2" aria-label="Menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <ul id="navMenu" class="md:hidden hidden bg-white rounded-xl mb-3 py-2 text-sm font-medium">
+      <li><a href="#sec-visao" data-sec="sec-visao" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Visão Geral</a></li>
+      <li><a href="#sec-ritmo" data-sec="sec-ritmo" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Volume & Ritmo</a></li>
+      <li><a href="#sec-funil" data-sec="sec-funil" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Funil</a></li>
+      <li><a href="#sec-inteligencia" data-sec="sec-inteligencia" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Inteligência</a></li>
+      <li><a href="#sec-proxima" data-sec="sec-proxima" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Próxima Quinzena</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header id="sec-visao" class="relative overflow-hidden text-white"
         style="background: linear-gradient(135deg, #13324F 0%, #1F4E79 58%, #2E75B6 130%);">
   <div class="hero-grid absolute inset-0"></div>
   <div class="relative max-w-5xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28">
@@ -96,7 +149,7 @@
 
 <main class="max-w-5xl mx-auto px-6">
 
-<section class="py-16 md:py-20 border-b border-slate-200/70">
+<section id="sec-ritmo" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
     <div class="flex items-center gap-3 mb-8">
     <span class="num text-brand-soft font-semibold text-sm">01</span>
     <span class="h-px w-8 bg-brand-soft/40"></span>
@@ -220,7 +273,7 @@
   </div>
 </section>
 
-<section class="py-16 md:py-20 border-b border-slate-200/70">
+<section id="sec-funil" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
     <div class="flex items-center gap-3 mb-8">
     <span class="num text-brand-soft font-semibold text-sm">02</span>
     <span class="h-px w-8 bg-brand-soft/40"></span>
@@ -229,32 +282,84 @@
 
 
   <div class="grid lg:grid-cols-3 gap-8 items-start">
-    <div class="lg:col-span-2 card bg-white rounded-2xl border border-slate-200/70 p-6">
-      <svg viewBox="0 0 720 410" class="w-full" font-family="Inter, sans-serif" role="img" aria-label="Funil de conversão">
-          <polygon points="35.0,0 365.0,0 206.0,60 194.0,60" fill="#13324F"></polygon>
-          <text x="410" y="26.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Impressões</text>
-          <text x="410" y="48.0" fill="#13324F" font-size="22" font-weight="700" class="num">126.528</text>
-          <polygon points="194.0,70 206.0,70 206.0,130 194.0,130" fill="#1F4E79"></polygon>
-          <text x="410" y="96.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Cliques</text>
-          <text x="410" y="118.0" fill="#13324F" font-size="22" font-weight="700" class="num">1.368</text>
-          <text x="700" y="106.0" fill="#2E75B6" font-size="14" font-weight="600" text-anchor="end" class="num">1,1%</text>
-          <polygon points="194.0,140 206.0,140 206.0,200 194.0,200" fill="#2E75B6"></polygon>
-          <text x="410" y="166.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Leads (Meta)</text>
-          <text x="410" y="188.0" fill="#13324F" font-size="22" font-weight="700" class="num">238</text>
-          <text x="700" y="176.0" fill="#2E75B6" font-size="14" font-weight="600" text-anchor="end" class="num">17,4%</text>
-          <polygon points="194.0,210 206.0,210 206.0,270 194.0,270" fill="#3A86C8"></polygon>
-          <text x="410" y="236.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Leads (Supremo/Meta)</text>
-          <text x="410" y="258.0" fill="#13324F" font-size="22" font-weight="700" class="num">289</text>
-          <text x="700" y="246.0" fill="#2E75B6" font-size="14" font-weight="600" text-anchor="end" class="num">121,4%</text>
-          <polygon points="194.0,280 206.0,280 206.0,340 194.0,340" fill="#5B9BD5"></polygon>
-          <text x="410" y="306.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Atendidos</text>
-          <text x="410" y="328.0" fill="#13324F" font-size="22" font-weight="700" class="num">284</text>
-          <text x="700" y="316.0" fill="#2E75B6" font-size="14" font-weight="600" text-anchor="end" class="num">98,3%</text>
-          <polygon points="194.0,350 206.0,350 206.0,410 194.0,410" fill="#7BAFDD"></polygon>
-          <text x="410" y="376.0" fill="#64748B" font-size="12" font-weight="600" style="text-transform:uppercase; letter-spacing:.06em;">Vendas</text>
-          <text x="410" y="398.0" fill="#13324F" font-size="22" font-weight="700" class="num">2</text>
-          <text x="700" y="386.0" fill="#2E75B6" font-size="14" font-weight="600" text-anchor="end" class="num">0,7%</text>
-      </svg>
+    <div class="lg:col-span-2 card bg-white rounded-2xl border border-slate-200/70 p-6 md:p-8">
+      <div class="space-y-7">
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Impressões</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">126.528</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 100.0%; background: #13324F;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Cliques</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-xs font-semibold text-brand-soft">1,1%<span class="text-slate-400 font-normal"> da etapa anterior</span></span>
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">1.368</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 4.0%; background: #1F4E79;"></div>
+          </div>
+          <div class="mt-1.5 text-[11px] text-slate-400 num">↓ 125.160 perdidos da etapa anterior</div>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Leads (Meta)</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-xs font-semibold text-brand-soft">17,4%<span class="text-slate-400 font-normal"> da etapa anterior</span></span>
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">238</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 4.0%; background: #2E75B6;"></div>
+          </div>
+          <div class="mt-1.5 text-[11px] text-slate-400 num">↓ 1.130 perdidos da etapa anterior</div>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Leads (Supremo/Meta)</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-xs font-semibold text-brand-soft">121,4%<span class="text-slate-400 font-normal"> da etapa anterior</span></span>
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">289</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 4.0%; background: #3A86C8;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Atendidos</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-xs font-semibold text-brand-soft">98,3%<span class="text-slate-400 font-normal"> da etapa anterior</span></span>
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">284</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 4.0%; background: #5B9BD5;"></div>
+          </div>
+          <div class="mt-1.5 text-[11px] text-slate-400 num">↓ 5 perdidos da etapa anterior</div>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-3 mb-2">
+            <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Vendas</span>
+            <div class="flex items-baseline gap-3">
+              <span class="num text-xs font-semibold text-brand-soft">0,7%<span class="text-slate-400 font-normal"> da etapa anterior</span></span>
+              <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">2</span>
+            </div>
+          </div>
+          <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full transition-all" style="width: 4.0%; background: #7BAFDD;"></div>
+          </div>
+          <div class="mt-1.5 text-[11px] text-slate-400 num">↓ 282 perdidos da etapa anterior</div>
+        </div>
+      </div>
     </div>
 
     <div class="space-y-4">
@@ -310,7 +415,7 @@
   </div>
 </section>
 
-<section class="py-16 md:py-20 border-b border-slate-200/70">
+<section id="sec-inteligencia" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
     <div class="flex items-center gap-3 mb-8">
     <span class="num text-brand-soft font-semibold text-sm">03</span>
     <span class="h-px w-8 bg-brand-soft/40"></span>
@@ -322,7 +427,7 @@
   <div class="grid md:grid-cols-3 gap-5">
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=YFS3UtVvCeYQ7kNvwFVZ4_F&_nc_oc=Adrcv7pa29pGiw90OA1IK4tBSQe23Xvhy09IfJWl4AcEnz_euhSr1UTsBljcR7421GX9AHlbywt-JwJIoWUTb0-x&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=djz0xd8wWeqorFPLZP7ddw&_nc_tpa=Q5bMBQGFr4wZAO2XwHfNp6IAq8bk6yq9o6SsNkB_zNkTu_t6xaxtGYz07Md0mhHWJdF_enuaAvDTFdgR&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af-Plj9f_c-Ql1gDU6bSfcjsGnM8d5jFb525IYa_pmC-CA&oe=6A2F5721" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=YFS3UtVvCeYQ7kNvwEjBAps&_nc_oc=Adq40uDGN1Zm9aWY_A7bxs0QBJZjdvjLoeNS-xz-Z5i0YhBzc8VLXRwXgaM-N2PBhpKZPhty8tRxRx-axWFDoa5T&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=MSODX0ZGkOQlQ4vC9aiZ6g&_nc_tpa=Q5bMBQH625Imlcbvx4qEEM_Astq_jV7_E1q8QKDH8VIuuvRQ1EEuxbgSK_c3H9biWmziD8M6sKuGuyRx&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af_oV6V3Z84gENAyM8pNCPTHaLhEJgNMDlPJttj4jkA6ig&oe=6A2F8F61" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#1</span>
       </div>
       <div class="p-4">
@@ -336,7 +441,7 @@
     </div>
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEg9mNj&_nc_oc=AdpdIhFGtPkYk3FR3L_Q_Td1fcFlHd2aKtSEF7oW0DpRQt0SSQdKl8jTCBF06uSIGLEUD130Ur4f75fB6UKIixKk&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=cHT7LuwyF9Et-qDvPVdSaA&_nc_tpa=Q5bMBQG55lmZVyYmxs464pSXK8ygspf9OtfKEWH4K68AlnyDf3Lf-9XJ92BM3mzpBvg49tsc4YGvl93U&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af-AKw3lr-Mkymt_eaPGU7FiTUbaMw4Ac5G2oPL6VywRUQ&oe=6A2F71BD" alt="VD02 - Caio Pajuçara" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=tOzU57npex8WFq0XZ1RiLg&_nc_tpa=Q5bMBQFjSbkZZ0Bo6MbRjZlEciSarJ3cEPEYfv0eM3NoGA0jEBJCkA5NImNhPKlaGAoMq6gwLWjNnJtw&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_vbdJNJOJk9wuHeHXajsPUwJYxrrREqJFnwM1DUUxf3A&oe=6A2FA9FD" alt="VD02 - Caio Pajuçara" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#2</span>
 <span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>      </div>
       <div class="p-4">
@@ -350,7 +455,7 @@
     </div>
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEg9mNj&_nc_oc=AdpdIhFGtPkYk3FR3L_Q_Td1fcFlHd2aKtSEF7oW0DpRQt0SSQdKl8jTCBF06uSIGLEUD130Ur4f75fB6UKIixKk&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=wu9trNxsZOPLExlVd8Qo9A&_nc_tpa=Q5bMBQFGnhRK-JGNetySaE1frw6Mj1sCl71i3ki0eGkB1FwSq3XobbCOlo200im2-8viLU0HjnSuNR6p&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_a0qPe49xfC-qxWyAnKwCFZcFGi6akZeKdAu-bR1qLfg&oe=6A2F71BD" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=yy26IoIkJkswTjkAbkP7Hg&_nc_tpa=Q5bMBQHikLfLkA-Rca18DvMb4sH087rIw0a12D6X3HEw-lAQB92Ax41yg_AAA6-2Ahbw33JVpZ4Aqloe&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af85LjpKjxWRxO79_C6FAsVtBCN5TKFAFZ_BVXVhTw6y-g&oe=6A2FA9FD" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#3</span>
 <span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>      </div>
       <div class="p-4">
@@ -523,7 +628,7 @@
   </div>
 </section>
 
-<section class="py-16 md:py-20">
+<section id="sec-proxima" class="scroll-mt-16 py-16 md:py-20">
     <div class="flex items-center gap-3 mb-8">
     <span class="num text-brand-soft font-semibold text-sm">04</span>
     <span class="h-px w-8 bg-brand-soft/40"></span>
@@ -568,7 +673,7 @@
       </div>
       <div class="text-xs space-y-1 md:text-right">
         <p>Faturamento por <code class="text-white/80">valor_vendido</code> do CRM (semântica VGV vs. fatia em validação).</p>
-<p>Gerado em 10/06/2026 13:59.</p>      </div>
+<p>Gerado em 10/06/2026 17:39.</p>      </div>
     </div>
   </div>
 </footer>
@@ -611,6 +716,46 @@
         },
       },
     });
+  })();
+</script>
+
+<script>
+  (function () {
+    const nav = document.getElementById('topnav');
+    // 1. sombra/fundo branco ao rolar
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // 2. scroll-spy: marca o link da seção que cruza o meio da viewport
+    const links = new Map(
+      [...document.querySelectorAll('.navlink')].map(a => [a.dataset.sec, a])
+    );
+    const ids = ['sec-visao', 'sec-ritmo', 'sec-funil', 'sec-inteligencia', 'sec-proxima'];
+    const secs = ids.map(id => document.getElementById(id)).filter(Boolean);
+    const setActive = (id) => links.forEach((a, sec) => a.classList.toggle('active', sec === id));
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      secs.forEach(s => obs.observe(s));
+    }
+
+    // 3. menu mobile (hambúrguer)
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const open = menu.classList.toggle('hidden') === false;
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      menu.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          toggle.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
   })();
 </script>
 </body>

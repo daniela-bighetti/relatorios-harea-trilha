@@ -222,73 +222,101 @@
     </div>
   </div>
 
-  <div class="grid lg:grid-cols-5 gap-6 mt-10">
-    <div class="lg:col-span-3 card bg-white rounded-2xl border border-slate-200/70 p-6">
-      <div class="flex items-baseline justify-between mb-4">
-        <h3 class="font-semibold text-brand-ink">Ritmo de leads por dia</h3>
-        <span class="text-xs text-slate-400">linha = investimento</span>
-      </div>
-      <div class="h-64"><canvas id="chartRitmo"></canvas></div>
+  <div class="card bg-white rounded-2xl border border-slate-200/70 p-6 mt-10">
+    <div class="flex items-baseline justify-between mb-4">
+      <h3 class="font-semibold text-brand-ink">Ritmo de leads por dia</h3>
+      <span class="text-xs text-slate-400">linha = investimento</span>
     </div>
+    <div class="h-64"><canvas id="chartRitmo"></canvas></div>
+  </div>
 
-    <div class="lg:col-span-2 card bg-white rounded-2xl border border-slate-200/70 p-6">
-      <h3 class="font-semibold text-brand-ink mb-4">Leads por campanha</h3>
-      <div class="space-y-3">
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de Funil | Lead | Splendido | 14/04/26 #TP">Fundo de Funil | Lead | Splendido | 14/04/26 #TP</span>
-              <span class="num font-semibold text-brand-ink">44</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 100.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de funil | Lead | Remarketing  | 09/01/26  #TP">Fundo de funil | Lead | Remarketing  | 09/01/26  #TP</span>
-              <span class="num font-semibold text-brand-ink">41</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 93.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de Funil | Lead | Umá | 14/04/26 #TP">Fundo de Funil | Lead | Umá | 14/04/26 #TP</span>
-              <span class="num font-semibold text-brand-ink">37</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 84.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de Funil | Lead | Marah | 10/12/25 #TP">Fundo de Funil | Lead | Marah | 10/12/25 #TP</span>
-              <span class="num font-semibold text-brand-ink">31</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 70.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP">Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP</span>
-              <span class="num font-semibold text-brand-ink">31</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 70.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="truncate pr-2 text-slate-600" title="Fundo de Funil | Lead | Sitges | 26/09/25 #TP">Fundo de Funil | Lead | Sitges | 26/09/25 #TP</span>
-              <span class="num font-semibold text-brand-ink">20</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full rounded-full" style="width: 45.0%; background: #2E75B6;"></div>
-            </div>
-          </div>
-      </div>
+  <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden mt-6">
+    <h3 class="font-semibold text-brand-ink px-5 pt-5 pb-3">Campanhas</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+            <th class="px-5 py-3 font-semibold">Campanha</th>
+            <th class="px-5 py-3 font-semibold text-right">Investido</th>
+            <th class="px-5 py-3 font-semibold text-right">Leads</th>
+            <th class="px-5 py-3 font-semibold text-right">CPL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Marah | 10/12/25 #TP">Fundo de Funil | Lead | Marah | 10/12/25 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 495,70</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">31</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 15,99</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Umá | 14/04/26 #TP">Fundo de Funil | Lead | Umá | 14/04/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 485,84</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">37</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 13,13</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Splendido | 14/04/26 #TP">Fundo de Funil | Lead | Splendido | 14/04/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 478,24</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">44</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 10,87</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Sitges | 26/09/25 #TP">Fundo de Funil | Lead | Sitges | 26/09/25 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 442,00</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">20</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 22,10</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de funil | Lead | Remarketing  | 09/01/26  #TP">Fundo de funil | Lead | Remarketing  | 09/01/26  #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 371,37</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">41</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 9,06</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Oásis | 04/11/25  #TP">Fundo de Funil | Lead | Oásis | 04/11/25  #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 363,49</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">17</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 21,38</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP">Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 256,93</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">31</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 8,29</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Topo de Funil | Tráfego | Perfil | 09/01/26 #TP">Topo de Funil | Tráfego | Perfil | 09/01/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 174,71</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">—</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP">Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 84,63</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">14</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 6,04</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Milagres | 15/01/26 #TP">Fundo de Funil | Lead | Milagres | 15/01/26 #TP</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 56,67</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">3</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 18,89</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Post do Instagram: Tem momentos que não voltam… e...">Post do Instagram: Tem momentos que não voltam… e...</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 23,98</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">—</td>
+          </tr>
+          <tr class="bg-slate-50/70 border-t border-slate-200/70">
+            <td class="px-5 py-3 font-semibold text-brand-ink">Total</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 3.233,56</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">238</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 13,59</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -495,7 +523,7 @@
   <div class="grid md:grid-cols-3 gap-5">
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=YFS3UtVvCeYQ7kNvwEjBAps&_nc_oc=Adq40uDGN1Zm9aWY_A7bxs0QBJZjdvjLoeNS-xz-Z5i0YhBzc8VLXRwXgaM-N2PBhpKZPhty8tRxRx-axWFDoa5T&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=pyMIhKkquLnF9bTDkXZ71A&_nc_tpa=Q5bMBQEhQYhfR0uuZmmUDF3WL6ej2q6chetucbO1su23NwSfueaz4WQDSgY3lQFrMXEZ3AH-3ah5Zx71&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af-jSFK-QSPFlvBm7wjJ04vQ7TCsIWttxEhwG8-_ISjVPw&oe=6A30A8A1" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=YFS3UtVvCeYQ7kNvwEjBAps&_nc_oc=Adq40uDGN1Zm9aWY_A7bxs0QBJZjdvjLoeNS-xz-Z5i0YhBzc8VLXRwXgaM-N2PBhpKZPhty8tRxRx-axWFDoa5T&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=JaQszs-USS18GAoZP16Tkw&_nc_tpa=Q5bMBQFjNg1JnEKBP7Q545P81X-iOgtSDbSjNXAWgZOAI-fgxa4j1SswXE9eYbrsSldVQXKI1v0SbIQn&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af_Zg0coanhGFEvDSAEjSGO2rnMDFGK5RmydXvyq1P4nUg&oe=6A30E0E1" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#1</span>
       </div>
       <div class="p-4">
@@ -509,7 +537,7 @@
     </div>
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=YNtTYiOZk9qiHbgerw-Jsg&_nc_tpa=Q5bMBQHOXbu2NW-FcHZ7xbbN1MA6zKLaFFBt72jMIoFNuYa7QC8aFjmLatTHvUOenXgqvViJ6hVqQH8E&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af9mG1uhx6xbzpw8zRnV95MB2PhDY2zeMMS99qdbX2FLRQ&oe=6A30C33D" alt="VD02 - Caio Pajuçara" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=8II7BhQO9h7efd2KTIRCGg&_nc_tpa=Q5bMBQHG_q-xKJfqsjXxOnemXvrK2DlzIEhMZ7oQZPPZ-XXeKWHG0XLdg61VCG5Eiu5CEL2xTOy3fT42&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_ynGRY6hQG4tsoUuwTxpegE1BRo5Yx1jEj9-2KjknU2Q&oe=6A30C33D" alt="VD02 - Caio Pajuçara" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#2</span>
 <span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>      </div>
       <div class="p-4">
@@ -523,7 +551,7 @@
     </div>
     <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
       <div class="relative aspect-[4/3] bg-slate-100">
-          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=kDw7lY7hyMaOOyAzchskQw&_nc_tpa=Q5bMBQF3QRY4uLsY1crhCyZ2SPwXJek-wbm_c_n9CiENT1tZ4yqApzgyVoYKTmZ7niwUQqUKD0N7LNoT&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af9OlMAk4TKxHc5Hdl_sANEVvZBA28kbZo3dtpIPD0Fmag&oe=6A30C33D" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
+          <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwEmfHlD&_nc_oc=AdpbXcX312tBqcMro8kTu-URwrYeEn9z2XT99jp_IPl1Xzz5Oj2btgUJp3uz0agpEXYkYcwldUDt0RfkT5IK46BJ&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=b0CdNDwjWY-4Bap4eJBczQ&_nc_tpa=Q5bMBQG5p3zwecsXqxsPNMm0EIFydTE0vt_z3E3eKAYQiXX4pmWTQvn2gJdjGHnsWvGvyTFyKs9HQOZV&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_-LXBrH8A6bhY8nhAwxpF6ZTA2QT3IUBRwTMGRdaawbQ&oe=6A30C33D" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
         <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#3</span>
 <span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>      </div>
       <div class="p-4">
@@ -698,7 +726,7 @@
       </div>
       <div class="text-xs space-y-1 md:text-right">
         <p>Faturamento por <code class="text-white/80">valor_vendido</code> do CRM (semântica VGV vs. fatia em validação).</p>
-<p>Gerado em 11/06/2026 14:36.</p>      </div>
+<p>Gerado em 11/06/2026 14:55.</p>      </div>
     </div>
   </div>
 </footer>

@@ -1,0 +1,1904 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harea Imob - Lançamentos — Relatório de Performance</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#2B5672',
+                      soft: '#EE4C20',
+                      ink:  '#2C322B' },
+            paper: '#FAFAF8',
+          },
+          fontFamily: {
+            sans:    ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Fraunces', 'Georgia', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { background: #FAFAF8; color: #1A2433; }
+    .num { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+    .eyebrow { letter-spacing: 0.22em; }
+    .hero-grid {
+      background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+    .reveal { opacity: 0; transform: translateY(14px); animation: rise .7s cubic-bezier(.22,.61,.36,1) forwards; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    .card { transition: box-shadow .25s ease, transform .25s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -24px rgba(19,50,79,.45); }
+
+    /* --- botões de período --- */
+    .perbtn {
+      padding: 7px 18px; border-radius: 999px; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,.75); border: 1px solid rgba(255,255,255,.28);
+      transition: all .2s ease; cursor: pointer; background: transparent;
+    }
+    .perbtn:hover { color: #fff; border-color: rgba(255,255,255,.55); }
+    .perbtn-active { background: #EE4C20; color: #fff; border-color: #EE4C20; }
+
+    /* --- sumário navegável (sticky + scroll-spy) --- */
+    #topnav { background: transparent; transition: background .3s ease, box-shadow .3s ease; }
+    #topnav.scrolled {
+      background: rgba(255,255,255,.9);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      box-shadow: 0 1px 0 rgba(15,23,42,.06), 0 10px 30px -22px rgba(15,23,42,.5);
+    }
+    #topnav .nav-brand { color: rgba(255,255,255,.92); transition: color .3s ease; }
+    #topnav.scrolled .nav-brand { color: #2C322B; }
+    .navlink {
+      position: relative; padding: 4px 1px; white-space: nowrap;
+      color: rgba(255,255,255,.72); transition: color .2s ease;
+    }
+    .navlink:hover { color: #fff; }
+    #topnav.scrolled .navlink { color: #64748B; }
+    #topnav.scrolled .navlink:hover { color: #2C322B; }
+    .navlink::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+      background: currentColor; border-radius: 2px;
+      transform: scaleX(0); transform-origin: left; transition: transform .22s ease;
+    }
+    .navlink.active::after { transform: scaleX(1); }
+    .navlink.active { color: #EE4C20; }
+    #topnav.scrolled .navlink.active { color: #EE4C20; }
+    #navMenu { box-shadow: 0 12px 30px -18px rgba(15,23,42,.5); }
+    @media print {
+      #topnav { display: none !important; }
+      .no-print { display: none !important; }
+      .reveal { animation: none; opacity: 1; transform: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+<nav id="topnav" class="fixed top-0 inset-x-0 z-50 no-print">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="flex items-center justify-between h-14">
+      <a href="#sec-visao-mes-2026-06" class="nav-brand font-display text-sm font-semibold tracking-tight">Harea Imob - Lançamentos</a>
+      <ul class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <li><a href="#sec-visao-mes-2026-06" data-sec="sec-visao" class="navlink">Visão Geral</a></li>
+        <li><a href="#sec-ritmo-mes-2026-06" data-sec="sec-ritmo" class="navlink">Meta Ads</a></li>
+        <li><a href="#sec-funil-mes-2026-06" data-sec="sec-funil" class="navlink">CRM</a></li>
+        <li><a href="#sec-corretores-mes-2026-06" data-sec="sec-corretores" class="navlink">Corretores</a></li>
+        <li><a href="#sec-inteligencia-mes-2026-06" data-sec="sec-inteligencia" class="navlink">Performance</a></li>
+      </ul>
+      <button id="navToggle" class="md:hidden text-white p-2 -mr-2" aria-label="Menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <ul id="navMenu" class="md:hidden hidden bg-white rounded-xl mb-3 py-2 text-sm font-medium">
+      <li><a href="#sec-visao-mes-2026-06" data-sec="sec-visao" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Visão Geral</a></li>
+      <li><a href="#sec-ritmo-mes-2026-06" data-sec="sec-ritmo" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Meta Ads</a></li>
+      <li><a href="#sec-funil-mes-2026-06" data-sec="sec-funil" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">CRM</a></li>
+      <li><a href="#sec-corretores-mes-2026-06" data-sec="sec-corretores" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Corretores</a></li>
+      <li><a href="#sec-inteligencia-mes-2026-06" data-sec="sec-inteligencia" class="navlink block px-4 py-2.5 !text-slate-600 hover:!text-brand-ink hover:bg-slate-50">Performance</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<div class="periodo" data-periodo="mes-2026-06">
+
+  <header id="sec-visao-mes-2026-06" class="relative text-white"
+          style="background: linear-gradient(140deg, #20251E 0%, #2C322B 55%, #3A4137 120%);">
+    <div class="hero-grid absolute inset-0"></div>
+    <div class="relative max-w-5xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+      <div class="flex items-center gap-3 text-xs eyebrow uppercase font-semibold text-white/70 reveal">
+        <span>Relatório de Performance</span>
+      </div>
+
+      <h1 class="font-display mt-6 text-4xl md:text-6xl leading-[1.05] max-w-3xl reveal" style="animation-delay:.08s">
+        Harea Imob - Lançamentos
+      </h1>
+
+      <p class="mt-5 text-white/70 text-sm md:text-base reveal" style="animation-delay:.14s">
+        Junho &nbsp;·&nbsp; 01/06/2026 &nbsp;—&nbsp; 12/06/2026
+      </p>
+      <p class="mt-1.5 text-xs text-white/40 reveal" style="animation-delay:.16s">Última atualização: 12/06/2026 19:56</p>
+
+      <div class="mt-7 relative z-30 flex flex-wrap items-center gap-2 reveal no-print" style="animation-delay:.18s">
+        <div class="relative">
+          <button type="button" class="perbtn inline-flex items-center gap-1.5 perbtn-active" data-mes-toggle>
+            <span>Junho</span>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="mes-menu hidden absolute left-0 mt-2 z-50 min-w-[150px] rounded-xl bg-white py-1.5 shadow-2xl ring-1 ring-slate-900/5">
+            <button type="button" data-p="mes-2026-06" class="block w-full text-left px-4 py-2 text-sm font-semibold text-brand-ink hover:bg-slate-50 hover:text-brand-ink">Junho</button>
+            <button type="button" data-p="mes-2026-05" class="block w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-ink">Maio</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden reveal" style="animation-delay:.24s">
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">84</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Leads gerados (Meta)</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">R$ 1,8 mil</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Investimento</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">1</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Reuniões realizadas</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">0</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Vendas</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6">
+
+  <section id="sec-ritmo-mes-2026-06" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">01</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Meta Ads</h2>
+  </div>
+
+
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Investimento</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 39,6%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">R$ 1.787,66</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Impressões</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 34,9%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">61.476</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Cliques</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 35,7%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">677</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Leads das campanhas</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 59,2%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">84</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">CPL</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▲ 48,2%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">R$ 21,28</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 p-6 mt-10">
+      <div class="flex items-baseline justify-between mb-4">
+        <h3 class="font-semibold text-brand-ink">Ritmo de leads por dia</h3>
+        <span class="text-xs text-slate-400">linha = investimento</span>
+      </div>
+      <div class="h-64"><canvas id="chartRitmo-mes-2026-06"></canvas></div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden mt-6">
+      <h3 class="font-semibold text-brand-ink px-5 pt-5 pb-3">Campanhas</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+              <th class="px-5 py-3 font-semibold">Campanha</th>
+              <th class="px-5 py-3 font-semibold text-right">Investido</th>
+              <th class="px-5 py-3 font-semibold text-right">Leads</th>
+              <th class="px-5 py-3 font-semibold text-right">CPL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Luna 119 | 19/05/26 #TP">Fundo de Funil | Lead | Luna 119 | 19/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 495,96</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">6</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 82,66</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de funil | Lead | Remarketing  | 09/01/26  #TP">Fundo de funil | Lead | Remarketing  | 09/01/26  #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 363,67</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">21</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 17,32</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Residencial Valéria | 19/05/26 #TP">Fundo de Funil | Lead | Residencial Valéria | 19/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 236,27</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">17</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 13,90</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP">Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 221,14</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">26</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 8,51</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Splendido | 14/04/26 #TP">Fundo de Funil | Lead | Splendido | 14/04/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 157,27</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">9</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 17,47</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Capela | 09/06/26 #TP">Fundo de Funil | Lead | Capela | 09/06/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 97,00</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 97,00</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Stella Maris Residence | 11/06/26 #TP">Fundo de Funil | Lead | Stella Maris Residence | 11/06/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 39,21</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">—</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Sopro | 21/05/26 #TP">Fundo de Funil | Lead | Sopro | 21/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 30,95</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">2</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 15,47</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Wise Jatiúca | 28/05/26 #TP">Fundo de Funil | Lead | Wise Jatiúca | 28/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 28,07</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 28,07</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP">Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 27,41</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 27,41</td>
+            </tr>
+            <tr class="bg-slate-50/70 border-t border-slate-200/70">
+              <td class="px-5 py-3 font-semibold text-brand-ink">Total</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 1.787,66</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">84</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 21,28</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[11px] text-slate-400 px-5 py-3 leading-relaxed">O Total usa o investimento total da conta. Campanhas sem "lead" no nome (tráfego/boost, 0 leads) entram no total, mas não são listadas — por isso o total &gt; soma das linhas.</p>
+    </div>
+  </section>
+
+  <section id="sec-funil-mes-2026-06" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">02</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">CRM</h2>
+  </div>
+
+
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
+      <div class="lg:col-span-2 card bg-white rounded-2xl border border-slate-200/70 p-6 md:p-8">
+        <div class="space-y-7">
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Aguardando Atendimento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">3,4%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">3</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 7.0%; background: #9E300D;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Pré Atendimento - Corretor</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">38,6%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">34</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 79.1%; background: #C03C13;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Em Atendimento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">48,9%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">43</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 100.0%; background: #EE4C20;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Visita Agendada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">2,3%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">2</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 4.7%; background: #F26B41;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Visita Realizada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">1,1%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">1</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #F58C68;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Proposta Enviada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">1,1%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">1</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #F8AC8F;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Aguardando Futuro Lançamento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">4,5%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">4</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 9.3%; background: #FBCBB6;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Vendas</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">0,0%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">0</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 1.0%; background: #FBCBB6;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Captura Meta → CRM</div>
+          <div class="num mt-2 text-3xl font-semibold text-brand-ink">104,8%</div>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">
+            88 dos 84 leads reportados pela Meta foram localizados no CRM.
+          </p>
+        </div>
+
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Custos de aquisição</div>
+          <div class="space-y-3">
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-sm text-slate-600">Custo por visita <span class="num text-slate-400">(1)</span></span>
+              <span class="num text-lg font-semibold text-brand-ink">R$ 1.787,66</span>
+            </div>
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-sm text-slate-600">Custo por lead qualificado <span class="num text-slate-400">(8)</span></span>
+              <span class="num text-lg font-semibold text-brand-ink">R$ 223,46</span>
+            </div>
+          </div>
+          <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">Visitas = leads em "Visita Realizada". Qualificados = leads nas 6 etapas pós "Em Atendimento".</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Perdidos</div>
+            <div class="num mt-2 text-2xl font-semibold text-brand-ink">20</div>
+          </div>
+          <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Em aberto</div>
+            <div class="num mt-2 text-2xl font-semibold text-brand-ink">68</div>
+          </div>
+        </div>
+
+        <div class="card bg-brand-ink text-white rounded-2xl p-5">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Faturamento</div>
+              <div class="num mt-1 text-xl font-semibold">—</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">ROAS</div>
+              <div class="num mt-1 text-xl font-semibold">—</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Ticket médio</div>
+              <div class="num mt-1 text-base font-semibold">—</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Custo / venda</div>
+              <div class="num mt-1 text-base font-semibold">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">1º atendimento</div>
+          <div class="num mt-2 text-2xl font-semibold text-brand-ink">
+0,5h          </div>
+          <p class="mt-1 text-xs text-slate-500">
+            SLA 30min cumprido em 93,2%
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-corretores-mes-2026-06" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">03</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Corretores</h2>
+  </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+      <h3 class="font-semibold text-brand-ink px-5 pt-5 pb-3">Performance por corretor</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+              <th class="px-5 py-3 font-semibold">Corretor</th>
+              <th class="px-5 py-3 font-semibold text-right">Leads</th>
+              <th class="px-5 py-3 font-semibold text-right">Qualif.</th>
+              <th class="px-5 py-3 font-semibold text-right">% Qualif.</th>
+              <th class="px-5 py-3 font-semibold text-right">Visitas</th>
+              <th class="px-5 py-3 font-semibold text-right">% Visitas</th>
+              <th class="px-5 py-3 font-semibold text-right">Vendas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Eglesson Sales</td>
+              <td class="px-5 py-3 text-right num text-slate-700">9</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">11,1%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Emerson Fernandes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">9</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-500">22,2%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Thales Sarmento Correia da Rocha</td>
+              <td class="px-5 py-3 text-right num text-slate-700">8</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">12,5%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Moisés Saldanha</td>
+              <td class="px-5 py-3 text-right num text-slate-700">8</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Thiago Paes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">7</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">14,3%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Raiza Ferro</td>
+              <td class="px-5 py-3 text-right num text-slate-700">7</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Domingos Correia</td>
+              <td class="px-5 py-3 text-right num text-slate-700">7</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">14,3%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Alvim Silva</td>
+              <td class="px-5 py-3 text-right num text-slate-700">6</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Danilo da Silva Oliveira</td>
+              <td class="px-5 py-3 text-right num text-slate-700">6</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">16,7%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">luís wanderley</td>
+              <td class="px-5 py-3 text-right num text-slate-700">6</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">16,7%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">16,7%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Rafael Monte</td>
+              <td class="px-5 py-3 text-right num text-slate-700">5</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Karoline Marinho Alves</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Tassio Lopes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Italo Magalhães</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Cristina Cristello Adrego Carmo de Souza</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Mariana da Silva Oliveira</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[11px] text-slate-400 px-5 py-3 leading-relaxed">Leads de origem Meta. Qualif. = leads nas 6 etapas pós "Em Atendimento"; Visitas = "Visita Realizada" (snapshot atual).</p>
+    </div>
+  </section>
+
+  <section id="sec-inteligencia-mes-2026-06" class="scroll-mt-16 py-16 md:py-20">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">04</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Performance</h2>
+  </div>
+
+
+    <h3 class="font-semibold text-brand-ink mb-5">Top criativos do período</h3>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwHbyUhn&_nc_oc=Adrh7_2oUNvAGzzV0Np0XiPNU8AkPI-8pTSgFTD1RqJ_T8Z_Ukj6GycqpHakBIy3mwjfb5c3bIb1PXYsyp0JI2S0&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=6pcewPdQNcpYnno0u8CiOQ&_nc_tpa=Q5bMBQERcBoQRcm5YDzAHDUjzFD5dT7fjIh0YkNXqcMGbQk6QFJfsH0Yf4V7hbMZksoZeBkmwAVrp2_F&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_OnP2vkcMRqD4I_N7rCeZnVCgWZsgtpbguGTg5r1X21w&oe=6A324CFD" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#1</span>
+<span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">VD01 - Motion 1</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">26</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 8,30</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,5%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=tOguyVfYMOgQ7kNvwGqBYAl&_nc_oc=AdowiLnTqolh3Esq4RZHn8TE4W6UVlasTCH9yRP075a1dpsEALm_TFEapQ4Z0aMbQNwMrfewDyqUbeTRG2k4DcUv&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=y__VuP5IKf1kcNI3IKtPwQ&_nc_tpa=Q5bMBQFCkzDg6IHi9AeMUoujVcYR-E9WtB65W60m1Sw0GnvhvAhsf3nbFXRsmiZ0eFcZWGva6HiLHbQ1&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af-5WFA15_m6XfSJzwtiTNAAR3EHO8ytwQxp0Cr_qu1ihQ&oe=6A326AA1" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#2</span>
+        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">BN02 - Splendido</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">8</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 13,26</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,4%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwHbyUhn&_nc_oc=Adrh7_2oUNvAGzzV0Np0XiPNU8AkPI-8pTSgFTD1RqJ_T8Z_Ukj6GycqpHakBIy3mwjfb5c3bIb1PXYsyp0JI2S0&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=0b3Xvh6ILb1ayC6HRGxx3Q&_nc_tpa=Q5bMBQFO3-0x6ylNUx_GHNBSxx5sIjNpMRDDP3_H2yZgu3UGplnrPEhfABRF3AmTQgAPXeZLPlISfIge&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af_kahGpXH9We2wDYFKtKGIqUSi4z2w1zir9KbctRYPDHA&oe=6A324CFD" alt="VD06 - Casa Forte" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#3</span>
+<span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">VD06 - Casa Forte</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">8</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 14,84</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,4%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-brand-ink mt-12 mb-5">Performance por empreendimento</h3>
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+            <th class="px-5 py-3 font-semibold">Empreendimento</th>
+            <th class="px-5 py-3 font-semibold text-right">Leads</th>
+            <th class="px-5 py-3 font-semibold text-right">Vendas</th>
+            <th class="px-5 py-3 font-semibold text-right">Faturamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Santa Inês</td>
+            <td class="px-5 py-3 text-right num text-slate-700">27</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Residencial Valéria</td>
+            <td class="px-5 py-3 text-right num text-slate-700">17</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Splendido 02</td>
+            <td class="px-5 py-3 text-right num text-slate-700">10</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Umá</td>
+            <td class="px-5 py-3 text-right num text-slate-700">8</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Pajuçara</td>
+            <td class="px-5 py-3 text-right num text-slate-700">6</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Luna 119</td>
+            <td class="px-5 py-3 text-right num text-slate-700">6</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Capela</td>
+            <td class="px-5 py-3 text-right num text-slate-700">5</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Sopro</td>
+            <td class="px-5 py-3 text-right num text-slate-700">4</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Wise Jatiúca</td>
+            <td class="px-5 py-3 text-right num text-slate-700">2</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">(sem origem)</td>
+            <td class="px-5 py-3 text-right num text-slate-700">2</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Portal das Rocas</td>
+            <td class="px-5 py-3 text-right num text-slate-700">1</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8 md:max-w-md">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-6">
+        <h4 class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-4">Qualidade dos leads (calor)</h4>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Quente</span>
+            <span class="num font-semibold text-brand-ink">0</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 0.0%; background: #EE4C20;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Morno</span>
+            <span class="num font-semibold text-brand-ink">2</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 2.0%; background: #E8A23D;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Frio</span>
+            <span class="num font-semibold text-brand-ink">86</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 97.0%; background: #2B5672;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Sem classificação</span>
+            <span class="num font-semibold text-brand-ink">0</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 0.0%; background: #CBD5E1;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+<div class="periodo" data-periodo="mes-2026-05" hidden>
+
+  <header id="sec-visao-mes-2026-05" class="relative text-white"
+          style="background: linear-gradient(140deg, #20251E 0%, #2C322B 55%, #3A4137 120%);">
+    <div class="hero-grid absolute inset-0"></div>
+    <div class="relative max-w-5xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+      <div class="flex items-center gap-3 text-xs eyebrow uppercase font-semibold text-white/70 reveal">
+        <span>Relatório de Performance</span>
+      </div>
+
+      <h1 class="font-display mt-6 text-4xl md:text-6xl leading-[1.05] max-w-3xl reveal" style="animation-delay:.08s">
+        Harea Imob - Lançamentos
+      </h1>
+
+      <p class="mt-5 text-white/70 text-sm md:text-base reveal" style="animation-delay:.14s">
+        Maio &nbsp;·&nbsp; 01/05/2026 &nbsp;—&nbsp; 31/05/2026
+      </p>
+      <p class="mt-1.5 text-xs text-white/40 reveal" style="animation-delay:.16s">Última atualização: 12/06/2026 19:56</p>
+
+      <div class="mt-7 relative z-30 flex flex-wrap items-center gap-2 reveal no-print" style="animation-delay:.18s">
+        <div class="relative">
+          <button type="button" class="perbtn inline-flex items-center gap-1.5 perbtn-active" data-mes-toggle>
+            <span>Maio</span>
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </button>
+          <div class="mes-menu hidden absolute left-0 mt-2 z-50 min-w-[150px] rounded-xl bg-white py-1.5 shadow-2xl ring-1 ring-slate-900/5">
+            <button type="button" data-p="mes-2026-06" class="block w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-brand-ink">Junho</button>
+            <button type="button" data-p="mes-2026-05" class="block w-full text-left px-4 py-2 text-sm font-semibold text-brand-ink hover:bg-slate-50 hover:text-brand-ink">Maio</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden reveal" style="animation-delay:.24s">
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">513</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Leads gerados (Meta)</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">R$ 7,2 mil</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Investimento</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">7</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Reuniões realizadas</div>
+        </div>
+        <div class="bg-brand-ink/40 px-5 py-6">
+          <div class="num text-3xl md:text-4xl font-semibold">2</div>
+          <div class="mt-1 text-[11px] uppercase tracking-wider text-white/55">Vendas</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6">
+
+  <section id="sec-ritmo-mes-2026-05" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">01</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Meta Ads</h2>
+  </div>
+
+
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Investimento</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 22,4%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">R$ 7.188,06</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Impressões</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 29,4%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">256.561</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Cliques</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 10,9%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">2.792</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Leads das campanhas</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-rose-500 bg-rose-50">
+      <span class="num">▼ 6,6%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">513</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">CPL</span>
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold text-emerald-600 bg-emerald-50">
+      <span class="num">▼ 16,9%</span>
+    </span>
+
+        </div>
+        <div class="num mt-3 text-2xl md:text-3xl font-semibold text-brand-ink">R$ 14,01</div>
+        <div class="mt-1 text-[11px] text-slate-400">vs. período anterior</div>
+      </div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 p-6 mt-10">
+      <div class="flex items-baseline justify-between mb-4">
+        <h3 class="font-semibold text-brand-ink">Ritmo de leads por dia</h3>
+        <span class="text-xs text-slate-400">linha = investimento</span>
+      </div>
+      <div class="h-64"><canvas id="chartRitmo-mes-2026-05"></canvas></div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden mt-6">
+      <h3 class="font-semibold text-brand-ink px-5 pt-5 pb-3">Campanhas</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+              <th class="px-5 py-3 font-semibold">Campanha</th>
+              <th class="px-5 py-3 font-semibold text-right">Investido</th>
+              <th class="px-5 py-3 font-semibold text-right">Leads</th>
+              <th class="px-5 py-3 font-semibold text-right">CPL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Luna 119 | 19/05/26 #TP">Fundo de Funil | Lead | Luna 119 | 19/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 857,07</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">47</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 18,24</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Splendido | 14/04/26 #TP">Fundo de Funil | Lead | Splendido | 14/04/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 847,10</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">79</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 10,72</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de funil | Lead | Remarketing  | 09/01/26  #TP">Fundo de funil | Lead | Remarketing  | 09/01/26  #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 788,71</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">81</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 9,74</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP">Fundo de Funil | Lead | Santa Inês | 20/04/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 634,60</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">74</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 8,58</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Sitges | 26/09/25 #TP">Fundo de Funil | Lead | Sitges | 26/09/25 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 611,47</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">27</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 22,65</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Umá | 14/04/26 #TP">Fundo de Funil | Lead | Umá | 14/04/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 607,21</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">45</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 13,49</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Marah | 10/12/25 #TP">Fundo de Funil | Lead | Marah | 10/12/25 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 585,86</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">39</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 15,02</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Oásis | 04/11/25  #TP">Fundo de Funil | Lead | Oásis | 04/11/25  #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 522,46</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">24</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 21,77</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP">Fundo de Funil | Lead | Portal das Rocas | 11/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 409,68</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">42</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 9,75</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Sopro | 21/05/26 #TP">Fundo de Funil | Lead | Sopro | 21/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 365,84</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">12</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 30,49</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Residencial Valéria | 19/05/26 #TP">Fundo de Funil | Lead | Residencial Valéria | 19/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 305,90</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">36</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 8,50</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Wise Jatiúca | 28/05/26 #TP">Fundo de Funil | Lead | Wise Jatiúca | 28/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 77,63</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">3</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 25,88</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Oásis | 22/05/26  #TP">Fundo de Funil | Lead | Oásis | 22/05/26  #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 73,24</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 73,24</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Milagres | 15/01/26 #TP">Fundo de Funil | Lead | Milagres | 15/01/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 56,67</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">3</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 18,89</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 max-w-xs truncate" title="Fundo de Funil | Lead | Sopro | 19/05/26 #TP">Fundo de Funil | Lead | Sopro | 19/05/26 #TP</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">R$ 49,50</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+              <td class="px-5 py-3 text-right num text-slate-700 whitespace-nowrap">—</td>
+            </tr>
+            <tr class="bg-slate-50/70 border-t border-slate-200/70">
+              <td class="px-5 py-3 font-semibold text-brand-ink">Total</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 7.188,06</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">513</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink whitespace-nowrap">R$ 14,01</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[11px] text-slate-400 px-5 py-3 leading-relaxed">O Total usa o investimento total da conta. Campanhas sem "lead" no nome (tráfego/boost, 0 leads) entram no total, mas não são listadas — por isso o total &gt; soma das linhas.</p>
+    </div>
+  </section>
+
+  <section id="sec-funil-mes-2026-05" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">02</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">CRM</h2>
+  </div>
+
+
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
+      <div class="lg:col-span-2 card bg-white rounded-2xl border border-slate-200/70 p-6 md:p-8">
+        <div class="space-y-7">
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Aguardando Atendimento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">2,8%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">16</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 6.7%; background: #9E300D;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Pré Atendimento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">0,5%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">3</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #C03C13;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Pré Atendimento - Corretor</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">39,6%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">224</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 93.7%; background: #EE4C20;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Em Atendimento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">42,2%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">239</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 100.0%; background: #F26B41;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Visita Agendada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">1,1%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">6</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #F58C68;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Visita Realizada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">1,2%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">7</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #F8AC8F;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Proposta Enviada</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">0,4%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">2</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #FBCBB6;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Aguardando Futuro Lançamento</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">11,8%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">67</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 28.0%; background: #FBCBB6;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-end justify-between gap-3 mb-2">
+              <span class="text-xs uppercase tracking-[0.14em] font-semibold text-slate-500">Vendas</span>
+              <div class="flex items-baseline gap-3">
+                <span class="num text-xs font-semibold text-brand-soft">0,4%<span class="text-slate-400 font-normal"> do total</span></span>
+                <span class="num text-2xl md:text-3xl font-bold text-brand-ink leading-none">2</span>
+              </div>
+            </div>
+            <div class="h-3.5 rounded-full bg-slate-100 overflow-hidden">
+              <div class="h-full rounded-full transition-all" style="width: 3.0%; background: #FBCBB6;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Captura Meta → CRM</div>
+          <div class="num mt-2 text-3xl font-semibold text-brand-ink">110,3%</div>
+          <p class="mt-2 text-xs text-slate-500 leading-relaxed">
+            566 dos 513 leads reportados pela Meta foram localizados no CRM.
+          </p>
+        </div>
+
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Custos de aquisição</div>
+          <div class="space-y-3">
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-sm text-slate-600">Custo por visita <span class="num text-slate-400">(7)</span></span>
+              <span class="num text-lg font-semibold text-brand-ink">R$ 1.026,87</span>
+            </div>
+            <div class="flex items-baseline justify-between gap-2">
+              <span class="text-sm text-slate-600">Custo por lead qualificado <span class="num text-slate-400">(84)</span></span>
+              <span class="num text-lg font-semibold text-brand-ink">R$ 85,57</span>
+            </div>
+          </div>
+          <p class="mt-3 text-[11px] text-slate-400 leading-relaxed">Visitas = leads em "Visita Realizada". Qualificados = leads nas 6 etapas pós "Em Atendimento".</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Perdidos</div>
+            <div class="num mt-2 text-2xl font-semibold text-brand-ink">435</div>
+          </div>
+          <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Em aberto</div>
+            <div class="num mt-2 text-2xl font-semibold text-brand-ink">129</div>
+          </div>
+        </div>
+
+        <div class="card bg-brand-ink text-white rounded-2xl p-5">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Faturamento</div>
+              <div class="num mt-1 text-xl font-semibold">R$ 1,3 mi</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">ROAS</div>
+              <div class="num mt-1 text-xl font-semibold">181,69x</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Ticket médio</div>
+              <div class="num mt-1 text-base font-semibold">R$ 653 mil</div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider text-white/55 font-semibold">Custo / venda</div>
+              <div class="num mt-1 text-base font-semibold">R$ 3,6 mil</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card bg-white rounded-2xl border border-slate-200/70 p-5">
+          <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">1º atendimento</div>
+          <div class="num mt-2 text-2xl font-semibold text-brand-ink">
+19,4h          </div>
+          <p class="mt-1 text-xs text-slate-500">
+            SLA 30min cumprido em 79,1%
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sec-corretores-mes-2026-05" class="scroll-mt-16 py-16 md:py-20 border-b border-slate-200/70">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">03</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Corretores</h2>
+  </div>
+
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+      <h3 class="font-semibold text-brand-ink px-5 pt-5 pb-3">Performance por corretor</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+              <th class="px-5 py-3 font-semibold">Corretor</th>
+              <th class="px-5 py-3 font-semibold text-right">Leads</th>
+              <th class="px-5 py-3 font-semibold text-right">Qualif.</th>
+              <th class="px-5 py-3 font-semibold text-right">% Qualif.</th>
+              <th class="px-5 py-3 font-semibold text-right">Visitas</th>
+              <th class="px-5 py-3 font-semibold text-right">% Visitas</th>
+              <th class="px-5 py-3 font-semibold text-right">Vendas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Alvim Silva</td>
+              <td class="px-5 py-3 text-right num text-slate-700">45</td>
+              <td class="px-5 py-3 text-right num text-slate-700">9</td>
+              <td class="px-5 py-3 text-right num text-slate-500">20,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Rafaela Viana</td>
+              <td class="px-5 py-3 text-right num text-slate-700">11</td>
+              <td class="px-5 py-3 text-right num text-slate-700">5</td>
+              <td class="px-5 py-3 text-right num text-slate-500">45,5%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Danilo da Silva Oliveira</td>
+              <td class="px-5 py-3 text-right num text-slate-700">62</td>
+              <td class="px-5 py-3 text-right num text-slate-700">12</td>
+              <td class="px-5 py-3 text-right num text-slate-500">19,4%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-500">3,2%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Thales Sarmento Correia da Rocha</td>
+              <td class="px-5 py-3 text-right num text-slate-700">54</td>
+              <td class="px-5 py-3 text-right num text-slate-700">7</td>
+              <td class="px-5 py-3 text-right num text-slate-500">13,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Emerson Fernandes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">52</td>
+              <td class="px-5 py-3 text-right num text-slate-700">17</td>
+              <td class="px-5 py-3 text-right num text-slate-500">32,7%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">1,9%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Moisés Saldanha</td>
+              <td class="px-5 py-3 text-right num text-slate-700">42</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">2,4%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">luís wanderley</td>
+              <td class="px-5 py-3 text-right num text-slate-700">39</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-500">7,7%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-500">5,1%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Raiza Ferro</td>
+              <td class="px-5 py-3 text-right num text-slate-700">35</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">2,9%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Domingos Correia</td>
+              <td class="px-5 py-3 text-right num text-slate-700">26</td>
+              <td class="px-5 py-3 text-right num text-slate-700">4</td>
+              <td class="px-5 py-3 text-right num text-slate-500">15,4%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Thiago Paes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">25</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-500">12,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-500">8,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Rafael Monte</td>
+              <td class="px-5 py-3 text-right num text-slate-700">24</td>
+              <td class="px-5 py-3 text-right num text-slate-700">7</td>
+              <td class="px-5 py-3 text-right num text-slate-500">29,2%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Eglesson Sales</td>
+              <td class="px-5 py-3 text-right num text-slate-700">23</td>
+              <td class="px-5 py-3 text-right num text-slate-700">4</td>
+              <td class="px-5 py-3 text-right num text-slate-500">17,4%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Italo Magalhães</td>
+              <td class="px-5 py-3 text-right num text-slate-700">22</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-500">13,6%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Tassio Lopes</td>
+              <td class="px-5 py-3 text-right num text-slate-700">20</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-500">15,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Cristina Cristello Adrego Carmo de Souza</td>
+              <td class="px-5 py-3 text-right num text-slate-700">20</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">5,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Karoline Marinho Alves</td>
+              <td class="px-5 py-3 text-right num text-slate-700">19</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-500">15,8%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Mariana da Silva Oliveira</td>
+              <td class="px-5 py-3 text-right num text-slate-700">13</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">(sem corretor)</td>
+              <td class="px-5 py-3 text-right num text-slate-700">11</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Caio Sarmento</td>
+              <td class="px-5 py-3 text-right num text-slate-700">8</td>
+              <td class="px-5 py-3 text-right num text-slate-700">1</td>
+              <td class="px-5 py-3 text-right num text-slate-500">12,5%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">José Thales Teixeira da Silva</td>
+              <td class="px-5 py-3 text-right num text-slate-700">6</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">SUZANA BORGENS FONSECA TEIXEIRA</td>
+              <td class="px-5 py-3 text-right num text-slate-700">4</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">Alison da Silva</td>
+              <td class="px-5 py-3 text-right num text-slate-700">3</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+            <tr class="border-b border-slate-100">
+              <td class="px-5 py-3 text-slate-700 whitespace-nowrap">João Castro</td>
+              <td class="px-5 py-3 text-right num text-slate-700">2</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num text-slate-700">0</td>
+              <td class="px-5 py-3 text-right num text-slate-500">0,0%</td>
+              <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[11px] text-slate-400 px-5 py-3 leading-relaxed">Leads de origem Meta. Qualif. = leads nas 6 etapas pós "Em Atendimento"; Visitas = "Visita Realizada" (snapshot atual).</p>
+    </div>
+  </section>
+
+  <section id="sec-inteligencia-mes-2026-05" class="scroll-mt-16 py-16 md:py-20">
+      <div class="flex items-center gap-3 mb-8">
+    <span class="num text-brand-soft font-semibold text-sm">04</span>
+    <span class="h-px w-8 bg-brand-soft/40"></span>
+    <h2 class="text-xs eyebrow uppercase font-bold text-slate-500">Performance</h2>
+  </div>
+
+
+    <h3 class="font-semibold text-brand-ink mb-5">Top criativos do período</h3>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwHbyUhn&_nc_oc=Adrh7_2oUNvAGzzV0Np0XiPNU8AkPI-8pTSgFTD1RqJ_T8Z_Ukj6GycqpHakBIy3mwjfb5c3bIb1PXYsyp0JI2S0&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=POErJqcyPKdl0q0iUww4Ag&_nc_tpa=Q5bMBQFpXZ9W4jF1IB0JexvwRfX0cNoKqUBOfMAogPwbK4mUqT5yEzazuSL6lHltf-NWiSlkb7ie-fqQ&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af-YklRJZn6lWmMUJnAYs-4x2iuCwFhX9AaUIXeqbrJEig&oe=6A324CFD" alt="VD01 - Motion 1" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#1</span>
+<span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">VD01 - Motion 1</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">69</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 8,19</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,5%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t45.1600-4/567414534_4295624437386466_6257624998952848208_n.png?_nc_cat=111&ccb=1-7&_nc_ohc=tOguyVfYMOgQ7kNvwGqBYAl&_nc_oc=AdowiLnTqolh3Esq4RZHn8TE4W6UVlasTCH9yRP075a1dpsEALm_TFEapQ4Z0aMbQNwMrfewDyqUbeTRG2k4DcUv&_nc_zt=1&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=yGsL9MB7YjlR6XOz12aRGg&_nc_tpa=Q5bMBQEM0U6KHOOwYfFv6dj7IvkBh8JTjL_zfXkw6P9hmFGGZP34UOOoK8zHT-fdUZrNPL-mYzopBNL4&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af___b1h5iPChcH9E45Sla4edyQr0-WyymTTLGcEBT_eYA&oe=6A326AA1" alt="BN02 - Splendido" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#2</span>
+        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">BN02 - Splendido</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">48</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 11,28</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,4%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+        <div class="relative aspect-[4/3] bg-slate-100">
+            <img src="https://scontent.fgru5-1.fna.fbcdn.net/v/t39.30808-1/441867450_7912151935473455_5805957099921617069_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=Xcs8k_vhim8Q7kNvwHbyUhn&_nc_oc=Adrh7_2oUNvAGzzV0Np0XiPNU8AkPI-8pTSgFTD1RqJ_T8Z_Ukj6GycqpHakBIy3mwjfb5c3bIb1PXYsyp0JI2S0&_nc_zt=24&_nc_ht=scontent.fgru5-1.fna&edm=AAwGEdEEAAAA&_nc_gid=KX6jxs0SPK6pcElycFS1XA&_nc_tpa=Q5bMBQFoiU505HpjKBiuFg_sP55qxn08gkNAbj1tqvI72_rnjhufH3QE7liXDgTWbVcA77wJmr_I_zfR&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=68aae3&_nc_sid=58080a&oh=00_Af9sXdEnmPlPU80eRaBcVJvivU7uXyftkk8MXQMFy-xEhg&oe=6A324CFD" alt="VD02 - Caio Pajuçara" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-3 left-3 num text-xs font-bold text-white bg-brand-ink/80 rounded-full px-2.5 py-1">#3</span>
+<span class="absolute top-3 right-3 text-[10px] uppercase tracking-wide text-white bg-black/50 rounded px-2 py-0.5">vídeo</span>        </div>
+        <div class="p-4">
+          <p class="text-sm font-medium text-brand-ink line-clamp-2 leading-snug min-h-[2.5rem]">VD02 - Caio Pajuçara</p>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div><div class="num text-lg font-semibold text-brand-ink">47</div><div class="text-[10px] uppercase text-slate-400">leads</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">R$ 7,75</div><div class="text-[10px] uppercase text-slate-400">cpl</div></div>
+            <div><div class="num text-lg font-semibold text-brand-ink">1,5%</div><div class="text-[10px] uppercase text-slate-400">ctr</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold text-brand-ink mt-12 mb-5">Performance por empreendimento</h3>
+    <div class="card bg-white rounded-2xl border border-slate-200/70 overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-200/70">
+            <th class="px-5 py-3 font-semibold">Empreendimento</th>
+            <th class="px-5 py-3 font-semibold text-right">Leads</th>
+            <th class="px-5 py-3 font-semibold text-right">Vendas</th>
+            <th class="px-5 py-3 font-semibold text-right">Faturamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">MIRAJ PATACHO</td>
+            <td class="px-5 py-3 text-right num text-slate-700">1</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+            <td class="px-5 py-3 text-right num text-slate-700">R$ 466 mil</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">RESERVA AYA TATUAMUNHA</td>
+            <td class="px-5 py-3 text-right num text-slate-700">1</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">1</td>
+            <td class="px-5 py-3 text-right num text-slate-700">R$ 840 mil</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Santa Inês</td>
+            <td class="px-5 py-3 text-right num text-slate-700">74</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Umá</td>
+            <td class="px-5 py-3 text-right num text-slate-700">61</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Feirao</td>
+            <td class="px-5 py-3 text-right num text-slate-700">52</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Splendido 02</td>
+            <td class="px-5 py-3 text-right num text-slate-700">50</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Pajuçara</td>
+            <td class="px-5 py-3 text-right num text-slate-700">48</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Luna 119</td>
+            <td class="px-5 py-3 text-right num text-slate-700">47</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Portal das Rocas</td>
+            <td class="px-5 py-3 text-right num text-slate-700">42</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Marah</td>
+            <td class="px-5 py-3 text-right num text-slate-700">38</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Residencial Valéria</td>
+            <td class="px-5 py-3 text-right num text-slate-700">36</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Oásis</td>
+            <td class="px-5 py-3 text-right num text-slate-700">33</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Splendido</td>
+            <td class="px-5 py-3 text-right num text-slate-700">26</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Sopro</td>
+            <td class="px-5 py-3 text-right num text-slate-700">17</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Sitges</td>
+            <td class="px-5 py-3 text-right num text-slate-700">15</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Sitges 02</td>
+            <td class="px-5 py-3 text-right num text-slate-700">12</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Wise Jatiúca</td>
+            <td class="px-5 py-3 text-right num text-slate-700">7</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Up Studios</td>
+            <td class="px-5 py-3 text-right num text-slate-700">3</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+          <tr class="border-b border-slate-100 last:border-0">
+            <td class="px-5 py-3 text-slate-700">Aya Tatuamunha</td>
+            <td class="px-5 py-3 text-right num text-slate-700">3</td>
+            <td class="px-5 py-3 text-right num font-semibold text-brand-ink">0</td>
+            <td class="px-5 py-3 text-right num text-slate-700">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8 md:max-w-md">
+      <div class="card bg-white rounded-2xl border border-slate-200/70 p-6">
+        <h4 class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mb-4">Qualidade dos leads (calor)</h4>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Quente</span>
+            <span class="num font-semibold text-brand-ink">2</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 0.0%; background: #EE4C20;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Morno</span>
+            <span class="num font-semibold text-brand-ink">18</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 3.0%; background: #E8A23D;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Frio</span>
+            <span class="num font-semibold text-brand-ink">546</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 96.0%; background: #2B5672;"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-600">Sem classificação</span>
+            <span class="num font-semibold text-brand-ink">0</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div class="h-full rounded-full" style="width: 0.0%; background: #CBD5E1;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer class="bg-brand-ink text-white/70">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <div class="font-display text-xl text-white">Trilha Performance Digital</div>
+        <p class="mt-1 text-sm">Relatório de performance · Harea Imob - Lançamentos</p>
+      </div>
+      <div class="text-xs space-y-1 md:text-right">
+        <p>Faturamento por <code class="text-white/80">valor_vendido</code> do CRM (semântica VGV vs. fatia em validação).</p>
+<p>Última atualização em 12/06/2026 19:56.</p>      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const BRAND_SOFT = '#EE4C20';
+  const BRAND_PRIMARY = '#2B5672';
+  const CHART_DATA = {
+    "mes-2026-06": { labels: ["01/06", "02/06", "05/06", "06/06", "07/06", "08/06", "09/06", "10/06", "11/06", "12/06"], leads: [9, 3, 5, 12, 11, 8, 8, 12, 9, 7], spend: [261.6, 48.83, 116.4, 168.42, 208.59, 189.4, 207.37, 212.2, 194.26, 180.59] },
+    "mes-2026-05": { labels: ["01/05", "02/05", "03/05", "04/05", "05/05", "06/05", "07/05", "08/05", "09/05", "10/05", "11/05", "12/05", "13/05", "14/05", "15/05", "16/05", "17/05", "18/05", "19/05", "20/05", "21/05", "22/05", "23/05", "24/05", "25/05", "26/05", "27/05", "28/05", "29/05", "30/05", "31/05"], leads: [11, 0, 19, 24, 14, 14, 14, 16, 16, 18, 22, 27, 17, 16, 10, 15, 22, 17, 15, 19, 13, 13, 25, 17, 20, 17, 14, 17, 11, 13, 27], spend: [168.87, 0.01, 225.27, 254.53, 250.93, 214.98, 231.18, 217.84, 204.16, 267.74, 246.35, 245.12, 252.14, 226.11, 228.33, 200.54, 312.67, 231.88, 252.07, 273.64, 249.55, 208.58, 186.53, 289.97, 224.33, 241.47, 242.2, 235.05, 237.13, 224.22, 344.67] }
+  };
+  const _charts = {};
+  function initChart(key) {
+    if (_charts[key]) { _charts[key].resize(); return; }
+    const el = document.getElementById('chartRitmo-' + key);
+    const d = CHART_DATA[key];
+    if (!el || !window.Chart || !d) return;
+    _charts[key] = new Chart(el, {
+      data: {
+        labels: d.labels,
+        datasets: [
+          { type: 'bar', label: 'Leads', data: d.leads, yAxisID: 'y',
+            backgroundColor: BRAND_SOFT, borderRadius: 5, maxBarThickness: 26, order: 2 },
+          { type: 'line', label: 'Investimento', data: d.spend, yAxisID: 'y1',
+            borderColor: BRAND_PRIMARY, backgroundColor: 'transparent', borderWidth: 2,
+            tension: .35, pointRadius: 0, borderDash: [5,4], order: 1 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: {
+            label: (c) => c.dataset.label === 'Investimento'
+              ? 'Investimento: R$ ' + c.parsed.y.toLocaleString('pt-BR', {minimumFractionDigits:2})
+              : 'Leads: ' + c.parsed.y } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#94A3B8' } },
+          y: { beginAtZero: true, position: 'left',
+               grid: { color: '#F1F5F9' }, ticks: { font: { size: 11 }, color: '#94A3B8', precision: 0 } },
+          y1: { beginAtZero: true, position: 'right', grid: { display: false },
+                ticks: { font: { size: 11 }, color: '#CBD5E1',
+                  callback: (v) => 'R$' + (v/1000).toFixed(1) + 'k' } },
+        },
+      },
+    });
+  }
+</script>
+
+<script>
+  (function () {
+    const nav = document.getElementById('topnav');
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const BASES = ['sec-visao', 'sec-ritmo', 'sec-funil', 'sec-corretores', 'sec-inteligencia'];
+    const navlinks = [...document.querySelectorAll('.navlink')];
+    const brand = document.querySelector('.nav-brand');
+    let observer = null;
+
+    function setupSpy(key) {
+      navlinks.forEach(a => a.setAttribute('href', '#' + a.dataset.sec + '-' + key));
+      if (brand) brand.setAttribute('href', '#sec-visao-' + key);
+      if (observer) observer.disconnect();
+      if (!('IntersectionObserver' in window)) return;
+      const setActive = (base) => navlinks.forEach(a => a.classList.toggle('active', a.dataset.sec === base));
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id.replace('-' + key, '')); });
+      }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+      BASES.map(b => document.getElementById(b + '-' + key)).filter(Boolean).forEach(s => observer.observe(s));
+    }
+
+    function showPeriod(key) {
+      document.querySelectorAll('.periodo').forEach(el => { el.hidden = (el.dataset.periodo !== key); });
+      initChart(key);
+      setupSpy(key);
+    }
+
+    function closeMenus() {
+      document.querySelectorAll('.mes-menu').forEach(m => m.classList.add('hidden'));
+    }
+    // botões de dias + itens de mês trocam o período
+    document.querySelectorAll('[data-p]').forEach(btn =>
+      btn.addEventListener('click', () => {
+        showPeriod(btn.dataset.p);
+        closeMenus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+    );
+    // botão "Meses" abre/fecha o dropdown
+    document.querySelectorAll('[data-mes-toggle]').forEach(btn =>
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const menu = btn.parentElement.querySelector('.mes-menu');
+        const willOpen = menu.classList.contains('hidden');
+        closeMenus();
+        if (willOpen) menu.classList.remove('hidden');
+      })
+    );
+    document.addEventListener('click', () => closeMenus());
+
+    // estado inicial (período padrão já visível)
+    const DEF = 'mes-2026-06';
+    initChart(DEF);
+    setupSpy(DEF);
+
+    // menu mobile
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+    if (toggle && menu) {
+      toggle.addEventListener('click', () => {
+        const open = menu.classList.toggle('hidden') === false;
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      menu.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          toggle.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
+  })();
+</script>
+</body>
+</html>
